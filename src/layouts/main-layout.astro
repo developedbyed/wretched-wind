@@ -1,0 +1,33 @@
+---
+const { title } = Astro.props
+import "@fontsource-variable/josefin-sans"
+import Nav from "../components/Nav"
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Digital Artist services, accessible for everyone."
+    />
+    <meta title={title} />
+  </head>
+  <body class="">
+    <Nav client:load />
+  </body>
+</html>
+<main>
+  <slot />
+  <!-- your content is injected here -->
+  <footer class="mt-12 bg-black px-8 py-12 md:px-16 lg:px-32">
+    <div></div>
+  </footer>
+</main>
+
+<style>
+  body {
+    font-family: "Josefin Sans Variable", sans-serif;
+  }
+</style>

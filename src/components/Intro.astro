@@ -1,0 +1,132 @@
+---
+import portrait from "/main-portrait.jpg"
+import paint from "/paint.png"
+import brush from "/brush.png"
+---
+
+<div
+  class="relative mx-12 flex flex-col items-center justify-center gap-12 xl:flex-row xl:gap-36"
+>
+  <div class="w-full xl:w-1/2">
+    <h1 class="text-xl">
+      Enter Hua's Doodle-Dazzled <span id="scribble" class="font-bold"
+        >Digital Universe!</span
+      >
+    </h1>
+
+    <div class="relative">
+      <svg class="absolute h-full w-full overflow-visible">
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style={{ stopColor: "#DC3A2B", stopOpacity: 1 }}
+            ></stop>
+            <stop offset="100%" style={{ stopColor: "#E18510", stopOpacity: 1 }}
+            ></stop>
+          </linearGradient>
+        </defs>
+        <path
+          id="border-path"
+          fill="none"
+          stroke="url(#gradient)"
+          stroke-width="4"></path>
+      </svg>
+      <p id="anim-p" class="p-6 text-main">
+        You've stumbled upon <span class="font-bold text-primary">Hua's</span> little
+        corner of the internet, where creativity runs rampant and normal is just
+        a setting on a washing machine.<br />
+        <br />
+        Stick around, explore the digital masterpieces, and enjoy the occasional
+        artistic shenanigans. It's more fun than you'd think!
+        <br />
+        <br />
+        Delight in the unpredictable artistic shenanigans that burst forth from the
+        canvas of this digital universe. Here, every visit is an adventure, every
+        glance an exploration. Dive in, the pixels are warm!
+      </p>
+    </div>
+    <div
+      class="flex justify-center pt-12 text-center text-main text-content xl:gap-16"
+    >
+      <div class="w-32">
+        <h2>Art Posts</h2>
+        <p id="art-counter" class="text-xl font-bold">85</p>
+      </div>
+      <div class="w-32">
+        <h2>Youtube</h2>
+        <p id="youtube-counter" class="text-xl font-bold">1.2m</p>
+      </div>
+      <div class="w-32">
+        <h2>Reviews</h2>
+        <p id="reviews-counter" class="text-bold text-xl font-bold">250+</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative">
+    <img class="h-full" src={portrait} alt="Hua's portrait" />
+    <div id="paint" class="absolute bottom-0 right-0 translate-y-1/4">
+      <img src={paint} alt="paint" />
+    </div>
+  </div>
+</div>
+<div class="mt-12 h-6 w-full bg-black"></div>
+
+<style>
+  #border-path {
+    animation: draw 1s forwards 1s ease-out;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  function updatePath() {
+    const textMain = document.querySelector("#anim-p") as HTMLElement
+    const path = document.querySelector("#border-path") as SVGPathElement
+
+    if (textMain && path) {
+      path.setAttribute(
+        "d",
+        `M0,0 V${textMain.offsetHeight} H${textMain.offsetWidth} v${
+          textMain.offsetHeight / 2
+        }`
+      )
+      const pathLength = path.getTotalLength()
+
+      path.style.strokeDasharray = pathLength.toString()
+      path.style.strokeDashoffset = pathLength.toString()
+    }
+  }
+
+  //Increment
+  function incrementCounter(
+    selector: string,
+    current: number,
+    target: number,
+    duration: number,
+    letter: string = ""
+  ) {
+    let counter = document.getElementById(selector)
+    let stepTime = Math.abs(Math.floor(duration / target))
+    if (current < target && counter) {
+      current++
+      counter.innerText = current.toString() + letter
+      setTimeout(
+        () => incrementCounter(selector, current, target, duration, letter),
+        stepTime
+      )
+    }
+  }
+  incrementCounter("art-counter", 0, 85, 1000)
+  incrementCounter("youtube-counter", 0, 328, 1000, "k")
+  incrementCounter("reviews-counter", 0, 250, 1000)
+
+  // Update the path when the page loads
+  window.addEventListener("DOMContentLoaded", updatePath)
+  // Update the path when the window is resized
+  window.addEventListener("resize", updatePath)
+</script>
