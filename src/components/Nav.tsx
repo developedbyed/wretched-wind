@@ -22,6 +22,27 @@ const itemMotion = {
   visible: { opacity: 1, x: 0 },
   hidden: { opacity: 0, x: -100 },
 }
+const navLinks = [
+  { name: "Home", href: "/", id: 1 },
+  { name: "Blog", href: "/blog", id: 2 },
+  { name: "Contact", href: "/contact", id: 3 },
+]
+
+const NavLinks = ({
+  isMobile,
+  className,
+}: {
+  isMobile: boolean
+  className: string
+}) => (
+  <div className={className}>
+    {navLinks.map(({ name, href, id }) => (
+      <motion.a key={id} variants={isMobile ? itemMotion : null} href={href}>
+        {name}
+      </motion.a>
+    ))}
+  </div>
+)
 
 export default function Nav() {
   const [toggled, setToggled] = useState(false)
@@ -61,7 +82,9 @@ export default function Nav() {
       </motion.div>
       {/* Title */}
 
-      <h1 className="text-lg font-bold">Hua.</h1>
+      <h1 className="text-lg font-bold">
+        <a href="/">Hua.</a>
+      </h1>
 
       {/* Nav Items animating in  */}
       {toggled && (
@@ -69,18 +92,13 @@ export default function Nav() {
           variants={navMotion}
           animate="visible"
           initial="hidden"
-          className="fixed left-0 top-0 z-10  flex h-screen w-full
-          flex-col items-center justify-center  gap-24  bg-white text-2xl font-bold"
+          className="fixed left-0 top-0  z-40 flex h-screen
+          w-full flex-col items-center  justify-center  gap-24 bg-white text-2xl font-bold"
         >
-          <motion.a variants={itemMotion} href="#">
-            Blog
-          </motion.a>
-          <motion.a variants={itemMotion} href="#">
-            My Work
-          </motion.a>
-          <motion.a variants={itemMotion} href="/contact">
-            Contact
-          </motion.a>
+          <NavLinks
+            className=" flex flex-col gap-24 text-lg "
+            isMobile={true}
+          />
         </motion.div>
       )}
       <motion.div
@@ -89,9 +107,7 @@ export default function Nav() {
         transition={{ delay: 0.35 }}
         className="hidden xl:flex xl:items-center  xl:justify-center xl:gap-12 xl:text-lg   "
       >
-        <a href="#">Blog</a>
-        <a href="#">My Work</a>
-        <a href="/contact">Contact</a>
+        <NavLinks className="flex gap-12" isMobile={false} />
       </motion.div>
 
       {/* Hamburger Toggle */}
